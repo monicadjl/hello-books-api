@@ -17,6 +17,7 @@ books = [
     Book(3, "Fictional Book Title", "A fantasy novel set in an imaginary world.")
 ] 
 
+#route to get us all books in our db
 @books_bp.route("", methods=["GET"])
 def handle_books():
     books_response = []
@@ -26,4 +27,16 @@ def handle_books():
             "title": book.title,
             "description": book.description
         })
-    return jsonify(books_response)
+    return jsonify(books_response), 200
+
+#gets us one specific books
+@books_bp.route("/<book_id>", methods=["GET"])
+def handle_book(book_id):
+    book_id = int(book_id)
+    for book in books:
+        if book.id == book_id:
+            return {
+                "id": book.id,
+                "title": book.title,
+                "description": book.description,
+            }
